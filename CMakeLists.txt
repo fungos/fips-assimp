@@ -10,8 +10,13 @@ if (NOT FIPS_IMPORT)
     fips_project(fips-assimp)
 endif()
 
+option(ASSIMP_C4D "Enable C4D Support (windows only)" OFF)
+
 fips_begin_lib(assimp)
-    include_directories(. assimp/code assimp/include)
+    include_directories(.)
+    include_directories(assimp/code)
+    include_directories(assimp/include)
+    include_directories(assimp/code/BoostWorkaround)
     fips_dir(.)
     fips_files(revision.h)
     fips_dir(assimp/include/assimp)
@@ -401,12 +406,15 @@ fips_begin_lib(assimp)
         add_definitions(-DFIPS_ASSIMP_WINDOWS=1)
         fips_dir(assimp/code/res)
         fips_files(resource.h)
-        fips_dir(assimp/code)
-        fips_files(
-            Win32DebugLogStream.h
-            C4DImporter.cpp
-            C4DImporter.h
-        )
+
+        if (ASSIMP_C4D)
+            fips_dir(assimp/code)
+            fips_files(
+                Win32DebugLogStream.h
+                C4DImporter.cpp
+                C4DImporter.h
+            )
+        endif()
     elseif (FIPS_LINUX)
         add_definitions(-DFIPS_ASSIMP_LINUX=1)
     endif()
