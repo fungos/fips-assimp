@@ -361,6 +361,9 @@ fips_begin_lib(assimp)
         ColladaParser.h
         MD2Loader.h
         IFCLoader.cpp
+        OpenGEXImporter.cpp
+        OpenGEXImporter.h
+        OpenGEXStructs.h
     )
     fips_dir(assimp/code/BoostWorkaround/boost/tuple)
     fips_files(tuple.hpp)
@@ -397,6 +400,11 @@ fips_begin_lib(assimp)
     fips_files(advancing_front.cc advancing_front.h cdt.cc cdt.h sweep.cc sweep.h sweep_context.cc sweep_context.h)
     fips_dir(assimp/contrib/unzip)
     fips_files(crypt.h ioapi.c ioapi.h unzip.c unzip.h)
+    fips_dir(assimp/contrib/openddlparser/code)
+    fips_files(OpenDDLParser.cpp DDLNode.cpp Value.cpp)
+    fips_dir(assimp/contrib/openddlparser/include/openddlparser)
+    fips_files(OpenDDLParser.h OpenDDLParserUtils.h OpenDDLCommon.h DDLNode.h Value.h)
+
     if (FIPS_ANDROID)
         fips_dir(assimp/include/assimp/port/AndroidJNI)
         fips_files(AndroidJNIOSystem.h)
@@ -414,10 +422,13 @@ fips_begin_lib(assimp)
                 C4DImporter.cpp
                 C4DImporter.h
             )
+        else()
+            add_definition(-DASSIMP_BUILD_NO_C4D_IMPORTER)
         endif()
     elseif (FIPS_LINUX)
         add_definitions(-DFIPS_ASSIMP_LINUX=1)
     endif()
+    fips_deps(zlib)
 fips_end_lib()
 
 if (FIPS_CLANG)
