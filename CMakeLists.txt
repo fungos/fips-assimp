@@ -404,6 +404,7 @@ fips_begin_lib(assimp)
     fips_files(OpenDDLParser.cpp DDLNode.cpp Value.cpp)
     fips_dir(assimp/contrib/openddlparser/include/openddlparser)
     fips_files(OpenDDLParser.h OpenDDLParserUtils.h OpenDDLCommon.h DDLNode.h Value.h)
+    include_directories(assimp/contrib/openddlparser/include/)
 
     if (FIPS_ANDROID)
         fips_dir(assimp/include/assimp/port/AndroidJNI)
