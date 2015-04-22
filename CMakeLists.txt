@@ -11,7 +11,6 @@ if (NOT FIPS_IMPORT)
 endif()
 
 option(ASSIMP_C4D "Enable C4D Support (windows only)" OFF)
-
 fips_begin_lib(assimp)
     include_directories(.)
     include_directories(assimp/code)
@@ -91,7 +90,6 @@ fips_begin_lib(assimp)
         SmoothingGroups.inl
         OptimizeGraph.cpp
         ProcessHelper.h
-        AssimpPCH.h
         FBXDocumentUtil.cpp
         ParsingUtils.h
         OFFLoader.cpp
@@ -157,7 +155,7 @@ fips_begin_lib(assimp)
         ValidateDataStructure.cpp
         ASELoader.h
         SortByPTypeProcess.cpp
-        ByteSwap.h
+        ByteSwapper.h
         LimitBoneWeightsProcess.cpp
         MakeVerboseFormat.h
         UnrealLoader.cpp
@@ -193,7 +191,6 @@ fips_begin_lib(assimp)
         FindInvalidDataProcess.cpp
         IRRMeshLoader.h
         IFCBoolean.cpp
-        AssimpPCH.cpp
         DXFLoader.h
         BlenderTessellator.cpp
         MD5Loader.cpp
@@ -434,9 +431,9 @@ fips_begin_lib(assimp)
 fips_end_lib()
 
 if (FIPS_CLANG)
-    set_target_properties(assimp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-deprecated-declarations -Wno-unused-function -Wno-unused-variable -Wno-reorder -fexceptions")
+    set_target_properties(assimp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-deprecated-declarations -Wno-unused-function -Wno-unused-variable -Wno-reorder -fexceptions -frtti")
 elseif(FIPS_GCC)
-    set_target_properties(assimp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-deprecated-declarations -Wno-unused-function -Wno-unused-variable -Wno-reorder -fexceptions")
+    set_target_properties(assimp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-deprecated-declarations -Wno-unused-function -Wno-unused-variable -Wno-reorder -fexceptions -frtti")
 elseif(FIPS_MSVC)
     set_target_properties(assimp PROPERTIES COMPILE_FLAGS "/wd4152 /wd4204 /wd4242 /wd4244 /wd4668 /wd4996")
 endif()
