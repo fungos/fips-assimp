@@ -37,6 +37,7 @@ fips_begin_lib(assimp)
     fips_files(poppack1.h pstdint.h pushpack1.h)
     fips_dir(assimp/code)
     fips_files(
+        Version.cpp
         DefaultIOStream.cpp
         MaterialSystem.h
         MaterialSystem.cpp
