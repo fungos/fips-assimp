@@ -423,7 +423,7 @@ fips_begin_lib(assimp)
                 C4DImporter.h
             )
         else()
-            add_definition(-DASSIMP_BUILD_NO_C4D_IMPORTER)
+            add_definitions(-DASSIMP_BUILD_NO_C4D_IMPORTER)
         endif()
     elseif (FIPS_LINUX)
         add_definitions(-DFIPS_ASSIMP_LINUX=1 -DASSIMP_BUILD_NO_C4D_IMPORTER)
