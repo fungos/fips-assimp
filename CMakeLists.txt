@@ -425,7 +425,7 @@ if (FIPS_CLANG)
 elseif(FIPS_GCC)
     set_target_properties(assimp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -fexceptions")
 elseif(FIPS_MSVC)
-    set_target_properties(assimp PROPERTIES COMPILE_FLAGS "/wd4152 /wd4204 /wd4242 /wd4244 /wd4668 /wd4996")
+    set_target_properties(assimp PROPERTIES COMPILE_FLAGS "/wd4152 /wd4204 /wd4242 /wd4244 /wd4668 /wd4996 /WX-")
 endif()
 
 if (NOT FIPS_IMPORT)
