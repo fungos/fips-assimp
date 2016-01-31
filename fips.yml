@@ -6,6 +6,7 @@ imports:
         git:    https://github.com/floooh/fips-zlib.git
 
 exports:
-    header-dirs: assimp/include
+    header-dirs:
+        - assimp/include
     modules:
         assimp: .

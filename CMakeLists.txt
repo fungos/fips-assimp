@@ -11,7 +11,6 @@ if (NOT FIPS_IMPORT)
 endif()
 
 option(ASSIMP_C4D "Enable C4D Support (windows only)" OFF)
-
 fips_begin_lib(assimp)
     include_directories(.)
     include_directories(assimp/code)
@@ -38,6 +37,7 @@ fips_begin_lib(assimp)
     fips_files(poppack1.h pstdint.h pushpack1.h)
     fips_dir(assimp/code)
     fips_files(
+        Version.cpp
         DefaultIOStream.cpp
         MaterialSystem.h
         MaterialSystem.cpp
@@ -91,7 +91,6 @@ fips_begin_lib(assimp)
         SmoothingGroups.inl
         OptimizeGraph.cpp
         ProcessHelper.h
-        AssimpPCH.h
         FBXDocumentUtil.cpp
         ParsingUtils.h
         OFFLoader.cpp
@@ -157,7 +156,7 @@ fips_begin_lib(assimp)
         ValidateDataStructure.cpp
         ASELoader.h
         SortByPTypeProcess.cpp
-        ByteSwap.h
+        ByteSwapper.h
         LimitBoneWeightsProcess.cpp
         MakeVerboseFormat.h
         UnrealLoader.cpp
@@ -193,7 +192,6 @@ fips_begin_lib(assimp)
         FindInvalidDataProcess.cpp
         IRRMeshLoader.h
         IFCBoolean.cpp
-        AssimpPCH.cpp
         DXFLoader.h
         BlenderTessellator.cpp
         MD5Loader.cpp
@@ -361,6 +359,9 @@ fips_begin_lib(assimp)
         ColladaParser.h
         MD2Loader.h
         IFCLoader.cpp
+        OpenGEXImporter.cpp
+        OpenGEXImporter.h
+        OpenGEXStructs.h
     )
     fips_dir(assimp/code/BoostWorkaround/boost/tuple)
     fips_files(tuple.hpp)
@@ -397,11 +398,18 @@ fips_begin_lib(assimp)
     fips_files(advancing_front.cc advancing_front.h cdt.cc cdt.h sweep.cc sweep.h sweep_context.cc sweep_context.h)
     fips_dir(assimp/contrib/unzip)
     fips_files(crypt.h ioapi.c ioapi.h unzip.c unzip.h)
+    fips_dir(assimp/contrib/openddlparser/code)
+    fips_files(OpenDDLParser.cpp DDLNode.cpp Value.cpp)
+    fips_dir(assimp/contrib/openddlparser/include/openddlparser)
+    fips_files(OpenDDLParser.h OpenDDLParserUtils.h OpenDDLCommon.h DDLNode.h Value.h)
+    include_directories(assimp/contrib/openddlparser/include/)
+
     if (FIPS_ANDROID)
         fips_dir(assimp/include/assimp/port/AndroidJNI)
         fips_files(AndroidJNIOSystem.h)
+        add_definitions(-DASSIMP_BUILD_NO_C4D_IMPORTER)
     elseif (FIPS_MACOS)
-        add_definitions(-DFIPS_ASSIMP_MACOS=1)
+        add_definitions(-DFIPS_ASSIMP_MACOS=1 -DASSIMP_BUILD_NO_C4D_IMPORTER)
     elseif (FIPS_WINDOWS)
         add_definitions(-DFIPS_ASSIMP_WINDOWS=1)
         fips_dir(assimp/code/res)
@@ -414,18 +422,21 @@ fips_begin_lib(assimp)
                 C4DImporter.cpp
                 C4DImporter.h
             )
+        else()
+            add_definitions(-DASSIMP_BUILD_NO_C4D_IMPORTER -DASSIMP_BUILD_NO_OPENGEX_IMPORTER -DOPENDDLPARSER_BUILD=1)
         endif()
     elseif (FIPS_LINUX)
-        add_definitions(-DFIPS_ASSIMP_LINUX=1)
+        add_definitions(-DFIPS_ASSIMP_LINUX=1 -DASSIMP_BUILD_NO_C4D_IMPORTER)
     endif()
+    fips_deps(zlib)
 fips_end_lib()
 
 if (FIPS_CLANG)
-    set_target_properties(assimp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-deprecated-declarations -fexceptions")
+    set_target_properties(assimp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-deprecated-declarations -Wno-unused-function -Wno-unused-variable -Wno-reorder -fexceptions -frtti")
 elseif(FIPS_GCC)
-    set_target_properties(assimp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -fexceptions")
+    set_target_properties(assimp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-deprecated-declarations -Wno-unused-function -Wno-unused-variable -Wno-reorder -fexceptions -frtti")
 elseif(FIPS_MSVC)
-    set_target_properties(assimp PROPERTIES COMPILE_FLAGS "/wd4152 /wd4204 /wd4242 /wd4244 /wd4668 /wd4996 /WX-")
+    set_target_properties(assimp PROPERTIES COMPILE_FLAGS "/wd4267 /wd4152 /wd4204 /wd4242 /wd4244 /wd4668 /wd4996 /WX-")
 endif()
 
 if (NOT FIPS_IMPORT)
