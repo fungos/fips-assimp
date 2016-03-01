@@ -102,6 +102,10 @@ fips_begin_lib(assimp)
         Bitmap.cpp
         IFCProfile.cpp
         SGSpatialSort.h
+        SIBImporter.h
+        SIBImporter.cpp
+        glTFImporter.h
+        glTFImporter.cpp
         irrXMLWrapper.h
         XMLTools.h
         CInterfaceIOWrapper.h
@@ -399,10 +403,11 @@ fips_begin_lib(assimp)
     fips_dir(assimp/contrib/unzip)
     fips_files(crypt.h ioapi.c ioapi.h unzip.c unzip.h)
     fips_dir(assimp/contrib/openddlparser/code)
-    fips_files(OpenDDLParser.cpp DDLNode.cpp Value.cpp)
+    fips_files(OpenDDLExport.cpp OpenDDLCommon.cpp OpenDDLParser.cpp DDLNode.cpp Value.cpp)
     fips_dir(assimp/contrib/openddlparser/include/openddlparser)
-    fips_files(OpenDDLParser.h OpenDDLParserUtils.h OpenDDLCommon.h DDLNode.h Value.h)
+    fips_files(OpenDDLExport.h OpenDDLParser.h OpenDDLParserUtils.h OpenDDLCommon.h DDLNode.h Value.h)
     include_directories(assimp/contrib/openddlparser/include/)
+    include_directories(assimp/contrib/rapidjson/include/)
 
     if (FIPS_ANDROID)
         fips_dir(assimp/include/assimp/port/AndroidJNI)
