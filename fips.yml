@@ -3,8 +3,7 @@
 
 imports:
      fips-googletest:
-         git: https://github.com/fungos/fips-googletest.git
-         branch: fips-assimp
+         git: https://github.com/mgerhardy/fips-googletest.git
      fips-zlib:
          git: https://github.com/floooh/fips-zlib.git
 
