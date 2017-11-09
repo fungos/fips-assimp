@@ -20,7 +20,4 @@ script:
     - python fips gen
     - python fips build
     # run tests
-    - python fips set config linux-make-unittest
-    - python fips gen
-    - python fips make assimpTest
     - python fips run assimpTest
