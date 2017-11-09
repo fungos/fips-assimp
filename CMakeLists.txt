@@ -78,7 +78,7 @@ elseif(FIPS_MSVC)
 endif()
 
 if (NOT FIPS_IMPORT)
-    gtest_begin(test_assimp NO_TEMPLATE)
+    gtest_begin(assimp NO_TEMPLATE)
         add_definitions(-DASSIMP_TEST_MODELS_DIR="${FIPS_PROJECT_DIR}/assimp/test/models")
         fips_include_directories(assimp/test/unit)
         fips_src(assimp/test/unit EXCEPT
