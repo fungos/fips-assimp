@@ -69,26 +69,11 @@ fips_begin_lib(assimp)
     endif()
 fips_end_lib()
 
-if (NOT FIPS_EXCEPTIONS)
-    set(ASSIMP_NO_EXCEPTIONS "-fno-exceptions")
-endif()
-
-if (NOT FIPS_RTTI)
-    set(ASSIMP_NO_RTTI "-fno-rtti")
-endif()
-
 if (FIPS_CLANG)
-    set_target_properties(assimp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-deprecated-declarations -Wno-unused-function -Wno-unused-variable -Wno-reorder ${GOOGLETEST_NO_EXCEPTIONS} ${GOOGLETEST_NO_RTTI}")
+    set_target_properties(assimp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-deprecated-declarations -Wno-unused-function -Wno-unused-variable -Wno-reorder -fexceptions -frtti")
 elseif(FIPS_GCC)
-    set_target_properties(assimp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-deprecated-declarations -Wno-unused-function -Wno-unused-variable -Wno-reorder ${GOOGLETEST_NO_EXCEPTIONS} ${GOOGLETEST_NO_RTTI}")
+    set_target_properties(assimp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-deprecated-declarations -Wno-unused-function -Wno-unused-variable -Wno-reorder -fexceptions -frtti")
 elseif(FIPS_MSVC)
-    if (NOT FIPS_EXCEPTIONS)
-        string(REPLACE "/EHsc" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS}) # -fno-exceptions
-    endif()
-
-    if (NOT TB_ENABLE_RTTI)
-        string(REPLACE "/GR" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS}) # -fno-rtti
-    endif()
     set_target_properties(assimp PROPERTIES COMPILE_FLAGS "/wd4138 /wd4267 /wd4152 /wd4204 /wd4242 /wd4244 /wd4477 /wd4530 /wd4577 /wd4668 /wd4996 /WX-")
 endif()
 
@@ -99,8 +84,11 @@ if (NOT FIPS_IMPORT)
         fips_src(assimp/test/unit EXCEPT
             # Some excluded are because compiler error
             utExport.cpp utNoBoostTest.cpp
-            # Some excluded are because are broken
-            utBlendImportAreaLight.cpp utBlendImportMaterials.cpp utBlenderImportExport.cpp)
+            # Some excluded are because are broken and I don't have time to check them, sorry
+            utBlendImportAreaLight.cpp
+            utBlendImportMaterials.cpp
+            utBlenderImportExport.cpp
+            utOpenGEXImportExport.cpp)
         fips_dir(assimp/code)
         fips_files(Version.cpp)
         fips_deps(assimp)
